@@ -1,7 +1,17 @@
 import React from "react";
 import { Route, useHistory } from "react-router-dom";
-import { useSelector,dispatch} from "react-redux";
-
+import { useSelector, useDispatch} from "react-redux";
+import {db} from "./firebase";
+import { 
+  collection,
+  doc,
+  getDoc, 
+  getDocs, 
+  addDoc, 
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { loadVocaFB,createVocaFB } from "./redux/modules/voca";
 
 import Detail from "./Detail";
 import styled from "styled-components";
@@ -12,20 +22,19 @@ import plusbutton from "./plusbutton.png";
 function App() {
   const history = useHistory();
   const voca_list = useSelector((state)=>state.voca.list);
-  console.log(voca_list);
+  // console.log(voca_list);
+  const dispatch = useDispatch();
 
+  React.useEffect(()=> {
+    dispatch(loadVocaFB());
+  },[]);
 
-  React.useEffect(() => {
-    
-  }, [voca_list]);
-
- 
   return (
   <div className="App">
     <Route path="/" exact>
       <Container>
         <Title>MY DICTIONARY</Title>
-        {voca_list.map((voca,idx)=>{
+        {voca_list&&voca_list.map((voca,idx)=>{
           return(
           <CardBox key={idx}>
           <CardChild>
@@ -101,7 +110,6 @@ const Underline = styled.div`
   font-weight: 400;
   color: #fff2f4;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-
 `
 
 const AddButton = styled.div`
@@ -112,7 +120,7 @@ const AddButton = styled.div`
 
 
 const Img = styled.img`
-  max-width: 50px;
+  max-width: 60px;
   min-height: 60px;
   position: fixed;
   top: 75%;

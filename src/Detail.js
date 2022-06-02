@@ -3,10 +3,12 @@ import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import {createVoca} from "./redux/modules/voca";
 import { useHistory } from "react-router-dom";
+import {createVocaFB} from "./redux/modules/voca";
+
 
 
 const Detail = () => {
-    // const [dict, setDict] = React.useState({voca:"소윤",define:"잉여",ex:"Dd"})
+    // const [dict, setDict] = React.useState({voca:"aa",define:"dd",ex:"dd"})
     const vocaInput = React.useRef(null);
     const defineInput = React.useRef(null);
     const exInput = React.useRef(null);
@@ -18,7 +20,8 @@ const Detail = () => {
         //     {...dict, voca: vocaInput.current.value, define:defineInput.current.value, ex:exInput.current.value}
            
         // );
-        dispatch(createVoca({voca: vocaInput.current.value, define:defineInput.current.value, ex:exInput.current.value}))
+        // dispatch(createVoca({voca: vocaInput.current.value, define:defineInput.current.value, ex:exInput.current.value}))
+        dispatch(createVocaFB({voca: vocaInput.current.value, define:defineInput.current.value, ex:exInput.current.value}))
         history.push("/")
     }
     return (
@@ -38,7 +41,6 @@ const Detail = () => {
                         <Borderline 
                         type="text" 
                         ref = {exInput}
-                        style = {{color: "blue"}}
                         ></Borderline>
                 </CardChild>
             </CardBox>
@@ -108,7 +110,11 @@ const AddButton = styled.button`
     min-height: 50px;
     margin: auto;
     display: block;
-    
+    background: #C9EFFF;
+    border-radius: 20px;
+    border: 3px solid #dadada;
+    color: #fff2f4;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 `;
 
 export default Detail;
