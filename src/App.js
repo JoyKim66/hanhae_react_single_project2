@@ -11,11 +11,12 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { loadVocaFB,createVocaFB } from "./redux/modules/voca";
+import { loadVocaFB,createVocaFB,UpdateVocaFB} from "./redux/modules/voca";
 
 import Detail from "./Detail";
 import styled from "styled-components";
 import plusbutton from "./plusbutton.png";
+import Update from "./Update";
 
 
 
@@ -36,7 +37,9 @@ function App() {
         <Title>MY DICTIONARY</Title>
         {voca_list&&voca_list.map((voca,idx)=>{
           return(
-          <CardBox key={idx}>
+          <CardBox key={idx} onClick = {() => {
+            history.push("/update/" + idx);
+          }}>
           <CardChild>
             <Underline>VOCA</Underline>
             <div>{voca.voca}</div>
@@ -65,6 +68,9 @@ function App() {
       <Detail />
     </Route>
 
+    <Route path="/update/:index" >
+      <Update />
+    </Route>
   </div>
     
   );
