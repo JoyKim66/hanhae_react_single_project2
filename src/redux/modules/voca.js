@@ -5,10 +5,10 @@ import {collection,getDoc,getDocs,addDoc,updateDoc,doc,
 const CREATE = "voca/CREATE";
 const LOAD = "voca/LOAD"
 const UPDATE = "voca/UPDATE"
+const DELETE = "voca/DELETE"
 
 const initialState = {
-    list: [  
-  ],
+    list: [],
 };
 
 
@@ -20,6 +20,9 @@ export const loadVoca = (voca) => {
 }
 export function updateVoca(voca_current_obj) {
   return {type: UPDATE, voca_current_obj};
+}
+export const deleteVoca = (voca_current_obj) => {
+  return {type: DELETE, voca_current_obj};
 }
 
 
@@ -61,6 +64,18 @@ export const updateVocaFB = (voca_current_obj,voca_id) => {
   dispatch(updateVoca({voca_index,...voca_current_obj}));
   }
 }
+export const deleteVocaFB = (voca_current_obj,voca_id) => {
+  return async function (dispatch,getState) {
+    const docRef = doc(db,"dict",voca_id)
+    await deleteDoc(docRef);
+    
+    const _voca_list = getState().voca.list;
+    const voca_index = _voca_list.findIndex((v) => {
+      return v.id === voca_id
+    })
+    dispatch(deleteVoca(voca_index,voca_current_obj))
+  }
+}
 
 
 
@@ -89,6 +104,14 @@ export default function reducer(state = initialState, action = {}) {
         })
         // console.log({list: new_voca_list});
         return {list:new_voca_list};
+      }
+      case "voca/DELETE" : {
+        console.log(state,action);
+        const new_voca_list = state.list.filter((data,idx) => {
+          return parseInt(action.voca_current_obj) !== idx
+        });
+        console.log(new_voca_list);
+        return {list: new_voca_list};
       }
     default:
         return state;
